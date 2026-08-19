@@ -3,10 +3,17 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { OrdersController } from './orders/orders.controller';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), HttpModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    HttpModule,
+    PassportModule,
+  ],
+  controllers: [AppController, OrdersController],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}

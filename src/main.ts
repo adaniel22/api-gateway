@@ -9,7 +9,6 @@ async function bootstrap() {
 
   const authUrl = config.get<string>('AUTH_SERVICE_URL')!;
   const catalogUrl = config.get<string>('CATALOG_SERVICE_URL')!;
-  const orderUrl = config.get<string>('ORDER_SERVICE_URL')!;
 
   // Proxy-szabályok: melyik útvonal melyik service-hez megy.
   // Fontos: mount path (app.use('/api/...')) helyett pathFilter, mert a mount
@@ -19,7 +18,7 @@ async function bootstrap() {
       pathFilter: '/api/auth',
       target: authUrl,
       changeOrigin: true,
-      pathRewrite: { '^/api/auth': '' },
+      pathRewrite: { '^/api/auth': 'auth' },
     }),
   );
 
@@ -29,15 +28,6 @@ async function bootstrap() {
       target: catalogUrl,
       changeOrigin: true,
       pathRewrite: { '^/api/products': '/products' },
-    }),
-  );
-
-  app.use(
-    createProxyMiddleware({
-      pathFilter: '/api/orders',
-      target: orderUrl,
-      changeOrigin: true,
-      pathRewrite: { '^/api/orders': '/orders' },
     }),
   );
 
